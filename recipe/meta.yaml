@@ -1,4 +1,4 @@
-{% set version = "2.7.0" %}
+{% set version = "2.7.1" %}
 
 package:
   name: python-hdfs
@@ -7,7 +7,9 @@ package:
 source:
   fn: hdfs-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/h/hdfs/hdfs-{{ version }}.tar.gz
-  sha256: ecd4650c39bb4f9421641320f4931edd81cf7126ae4e5ec880215adf6435df3d
+  sha256: 9cd8ac73e03c83f9e588a5ee6ec9b1e953fb652ad8dd03da337a17de34a4c2cb
+  patches:
+    - 0001-fix-load-source.patch
 
 build:
   noarch: python
@@ -20,15 +22,19 @@ build:
 requirements:
   host:
     - pip
-    - python >=2.7
+    - python >=3.7
   run:
-    - python >=2.7
+    - python >=3.7
     - docopt
-    - fastavro >=0.21.19
-    - pandas >=0.14.1
     - requests >=2.7.0
-    - requests-kerberos >=0.7.0
     - six >=1.9.0
+    # avro extra
+    - fastavro >=0.21.19
+    # kerberos extra
+    - requests-kerberos >=0.7.0
+    # dataframe extra
+    # fastavro >=0.21.19 as in avro extra
+    - pandas >=0.14.1
 
 test:
   imports:
@@ -37,16 +43,21 @@ test:
     - hdfs.ext.avro
     - hdfs.ext.dataframe
     - hdfs.ext.kerberos
-
   commands:
+    - pip check
     - hdfscli --help
     - hdfscli-avro --help
+  requires:
+    - pip
 
 about:
   home: http://hdfscli.readthedocs.org
   license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: 'HdfsCLI: API and command line interface for HDFS.'
+  dev_url: https://github.com/mtth/hdfs
+  doc_url: http://hdfscli.readthedocs.org
 
 extra:
   recipe-maintainers:
@@ -55,3 +66,4 @@ extra:
     - parente
     - FernandezMathieu
     - efiop
+    - xylar
