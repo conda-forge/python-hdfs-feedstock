@@ -6,12 +6,12 @@ package:
 
 source:
   fn: hdfs-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/h/hdfs/hdfs-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/h/hdfs/hdfs-{{ version }}.tar.gz
   sha256: 752a21e43f82197dce43697c73f454ba490838108c73a57a9247efb66d1c0479
 
 build:
   noarch: python
-  number: 0
+  number: 1
   entry_points:
     - hdfscli = hdfs.__main__:main
     - hdfscli-avro = hdfs.ext.avro.__main__:main
@@ -20,9 +20,10 @@ build:
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python {{ python_min }}
+    - setuptools
   run:
-    - python >=3.7
+    - python >={{ python_min }}
     - docopt
     - requests >=2.7.0
     - six >=1.9.0
@@ -47,6 +48,7 @@ test:
     - hdfscli-avro --help
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: http://hdfscli.readthedocs.org
